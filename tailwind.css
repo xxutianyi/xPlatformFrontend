@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ant {
+  &-page-header {
+    @apply pl-3 pr-2 md:px-10 !important;
+  }
+
+  &-pro {
+    &-form-login-page {
+      @apply bg-cover bg-no-repeat !important;
+    }
+
+    &-global-header-header-actions-avatar {
+      @apply pr-0 -mr-2 md:-mr-0 md:pr-4 !important;
+    }
+
+    &-page-container-children-container {
+      @apply px-2 md:px-10 !important;
+    }
+  }
+}
