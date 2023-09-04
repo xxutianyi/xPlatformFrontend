@@ -1,6 +1,6 @@
 import useMessage from '@/hooks/useMessage';
-import { currentUser, updateCurrentUser } from '@/services/_Foundation/Auth';
-import { BaseUserType } from '@/services/_Foundation/typings';
+import { currentUser, updateCurrentUser } from '@/services/_Foundation/Authentication';
+import { BaseUserType } from '@/services/_Foundation/_typings';
 import { useModel } from '@@/exports';
 import { ProFormText } from '@ant-design/pro-components';
 import { ModalForm } from '@ant-design/pro-form';

@@ -8,7 +8,7 @@ import {
   HeaderTitleRender,
   InitialStateType,
   ResponseStructure,
-} from '@/services/_Foundation/typings';
+} from '@/services/_Foundation/_typings';
 import { RunTimeLayoutConfig } from '@@/plugin-layout/types';
 import { RequestConfig } from '@@/plugin-request/request';
 import { message, notification, theme } from 'antd';

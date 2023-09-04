@@ -1,4 +1,4 @@
-import { BaseUserType, ResponseStructure } from '@/typings';
+import { BaseUserType, ResponseStructure } from '@/services/_Foundation/_typings';
 import { request } from '@umijs/max';
 
 export interface PasswordProps {
@@ -19,10 +19,6 @@ export interface WeworkConfig {
   login_type?: 'ServiceApp' | 'CorpApp';
 }
 
-export interface KookConfig {
-  client_id: string;
-  agent_id: string;
-}
 
 export interface UpdatePassword {
   password: string;
@@ -37,12 +33,6 @@ export async function verifyCode(mobile: string) {
   request<ResponseStructure<BaseUserType>>('/api/auth/mobile-verify', {
     method: 'GET',
     params: { mobile: mobile },
-  });
-}
-
-export async function kookConfig() {
-  return request<ResponseStructure<KookConfig>>('/api/config/kook', {
-    method: 'GET',
   });
 }
 
@@ -66,8 +56,8 @@ export async function mobileVerifyAuth(data: MobileVerifyProps) {
   });
 }
 
-export async function kookAuth(code: string) {
-  return request<ResponseStructure<BaseUserType>>('/api/auth/kook', {
+export async function weworkAuth(code: string) {
+  return request<ResponseStructure<BaseUserType>>('/api/auth/wework', {
     method: 'POST',
     data: { code: code },
   });

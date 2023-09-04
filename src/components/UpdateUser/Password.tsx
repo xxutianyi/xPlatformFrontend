@@ -1,4 +1,4 @@
-import { updateCurrentPassword, UpdatePassword } from '@/services/_Foundation/Auth';
+import { updateCurrentPassword, UpdatePassword } from '@/services/_Foundation/Authentication';
 import { ProFormText } from '@ant-design/pro-components';
 import { ModalForm } from '@ant-design/pro-form';
 import { Form } from 'antd';

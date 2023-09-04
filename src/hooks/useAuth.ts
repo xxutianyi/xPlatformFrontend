@@ -3,13 +3,13 @@ import useMessage from '@/hooks/useMessage';
 import {
   csrf,
   currentUser,
-  kookAuth,
+  weworkAuth,
   logoutAuth,
   mobileVerifyAuth,
   MobileVerifyProps,
   passwordAuth,
   PasswordProps,
-} from '@/services/_Foundation/Auth';
+} from '@/services/_Foundation/Authentication';
 import { history, useLocation, useModel, useRequest, useSearchParams } from '@umijs/max';
 
 export default function (middleware: 'auth' | 'guest' = 'auth') {
@@ -75,7 +75,7 @@ export default function (middleware: 'auth' | 'guest' = 'auth') {
 
   const kook = async (props: string) => {
     await csrf();
-    await kookAuth(props);
+    await weworkAuth(props);
     reRequest();
     refresh();
 
