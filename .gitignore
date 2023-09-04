@@ -12,5 +12,6 @@
 /.mfsu
 .swc
 
-.vscode
-.idea
+/.vscode
+/.idea
+.DS_Store
