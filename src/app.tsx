@@ -1,6 +1,7 @@
 import { AvatarDropdown, Feedback } from '@/components/RightContent';
 import ThemeProvider from '@/components/ThemeProvider';
-import { APP_NAME, ROOT_ID, TOKEN_KEY } from '@/constants';
+import { APP_NAME, LOGO_PATH, TOKEN_KEY } from "@/constants";
+import { currentState } from '@/services/_Foundation/Authentication';
 import {
   ActionRender,
   AvatarProps,
@@ -9,20 +10,16 @@ import {
   InitialStateType,
   ResponseStructure,
 } from '@/services/_Foundation/_typings';
+import { history } from '@@/exports';
 import { RunTimeLayoutConfig } from '@@/plugin-layout/types';
 import { RequestConfig } from '@@/plugin-request/request';
-import { message, notification, theme } from 'antd';
+import { Button, message, notification, theme } from 'antd';
 import { AxiosResponse } from 'axios';
 import React from 'react';
 
 export async function getInitialState(): Promise<InitialStateType> {
-  return {
-    currentUser: {
-      id: ROOT_ID,
-      name: 'Test User',
-      mobile: '18012345678',
-    },
-  };
+  const state = await currentState();
+  return state.data;
 }
 
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
@@ -30,19 +27,28 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
 
   const avatarProps: AvatarProps = {
     style: { fontSize: 14, backgroundColor: 'transparent' },
-    src: initialState?.currentUser?.avatar ?? '/images/avatar.png',
-    title: initialState?.currentUser?.name,
+    src: initialState?.user?.avatar ?? '/images/avatar.png',
+    title: initialState?.user?.name,
     render: (_: AvatarProps, avatarChildren: React.ReactNode) => (
       <AvatarDropdown>{avatarChildren}</AvatarDropdown>
     ),
   };
 
   const actionRender: ActionRender = () => {
-    return [<Feedback />];
+    return [<Feedback key="feedback" />];
   };
 
-  const headerTitleRender: HeaderTitleRender = (logo) => {
-    return <div>{logo}</div>;
+  const headerTitleRender: HeaderTitleRender = (logo, title) => {
+    const onClick = () => {
+      history.push('/');
+    };
+
+    return (
+      <Button type="text" style={{ height: 44 }} onClick={onClick}>
+        {logo}
+        {title}
+      </Button>
+    );
   };
 
   return {
@@ -50,7 +56,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     actionsRender: actionRender,
     breadcrumbRender: false,
     title: APP_NAME,
-    logo: '/images/Logo&Text.png',
+    logo: LOGO_PATH,
     headerTitleRender: headerTitleRender,
     layout: 'mix',
     menu: {
@@ -66,7 +72,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
       fontSize: 12,
       markStyle: { textAlign: 'center' },
     },
-    pure: !initialState?.currentUser,
+    pure: !initialState?.user,
   };
 };
 
@@ -91,6 +97,7 @@ export const request: RequestConfig<ResponseStructure> = {
   responseInterceptors: [
     (response) => {
       const { data, status } = response as AxiosResponse<ResponseStructure>;
+      console.log(data);
       if (status === 200 && !data.success && data.errorCode !== 401) {
         switch (data.showType) {
           case ErrorShowType.SILENT:

@@ -1,6 +1,13 @@
-import { Model } from "@/services/_Foundation/_model";
-import { PaginationData, PaginationProps, ResponseStructure } from '@/services/_Foundation/_typings';
+import { Model } from '@/services/_Foundation/_Model';
+import {
+  PaginationData,
+  PaginationProps,
+  ResponseStructure,
+} from '@/services/_Foundation/_typings';
 import { request } from '@@/exports';
+
+const UserResource = '/api/structure/users';
+const TeamResource = '/api/structure/teams';
 
 export async function usersOptions() {
   return request<ResponseStructure<Model.User[]>>('/api/options/users', {
@@ -15,17 +22,14 @@ export async function teamsOptions() {
 }
 
 export async function usersIndex(param: PaginationProps) {
-  return request<ResponseStructure<PaginationData<Model.User>>>(
-    '/api/structure/users',
-    {
-      method: 'GET',
-      params: param,
-    },
-  );
+  return request<ResponseStructure<PaginationData<Model.User>>>(UserResource, {
+    method: 'GET',
+    params: param,
+  });
 }
 
 export async function usersCreate(body: Model.User) {
-  return request<ResponseStructure<Model.User>>('/api/structure/users', {
+  return request<ResponseStructure<string>>(UserResource, {
     method: 'POST',
     data: body,
   });
@@ -33,7 +37,7 @@ export async function usersCreate(body: Model.User) {
 
 export async function usersUpdate(param: { user: string }, body: Model.User) {
   return request<ResponseStructure<Model.User>>(
-    '/api/structure/users/' + param.user,
+    `${UserResource}/${param.user}`,
     {
       method: 'PUT',
       data: body,
@@ -42,34 +46,27 @@ export async function usersUpdate(param: { user: string }, body: Model.User) {
 }
 
 export async function usersDelete(param: { user: string }) {
-  return request<ResponseStructure<null>>(
-    '/api/structure/users/' + param.user,
-    {
-      method: 'DELETE',
-    },
-  );
+  return request<ResponseStructure<null>>(`${UserResource}/${param.user}`, {
+    method: 'DELETE',
+  });
 }
 
 export async function teamsIndex(param: PaginationProps) {
-  return request<ResponseStructure<PaginationData<Model.Team>>>(
-    '/api/structure/teams',
-    {
-      method: 'GET',
-      params: param,
-    },
-  );
+  return request<ResponseStructure<PaginationData<Model.Team>>>(TeamResource, {
+    method: 'GET',
+    params: param,
+  });
 }
 
 export async function teamsCreate(body: Model.Team) {
-  return request<ResponseStructure<Model.Team>>('/api/structure/teams', {
+  return request<ResponseStructure<Model.Team>>(TeamResource, {
     method: 'POST',
     data: body,
   });
 }
 
 export async function teamsUpdate(param: { team: string }, body: Model.Team) {
-  return request<ResponseStructure<Model.Team>>(
-    '/api/structure/teams/' + param.team,
+  return request<ResponseStructure<Model.Team>>(`${TeamResource}/${param.team}`,
     {
       method: 'PUT',
       data: body,
@@ -78,10 +75,7 @@ export async function teamsUpdate(param: { team: string }, body: Model.Team) {
 }
 
 export async function teamsDelete(param: { team: string }) {
-  return request<ResponseStructure<null>>(
-    '/api/structure/teams/' + param.team,
-    {
-      method: 'DELETE',
-    },
-  );
+  return request<ResponseStructure<null>>(`${TeamResource}/${param.team}`, {
+    method: 'DELETE',
+  });
 }

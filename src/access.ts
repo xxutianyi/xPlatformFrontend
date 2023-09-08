@@ -1,10 +1,21 @@
-export default (initialState: API.UserInfo) => {
-  // 在这里按照初始化数据定义项目中的权限，统一管理
-  // 参考文档 https://umijs.org/docs/max/access
-  const canSeeAdmin = !!(
-    initialState && initialState.name !== 'dontHaveAccess'
-  );
-  return {
-    canSeeAdmin,
+import { InitialStateType } from '@/services/_Foundation/_typings';
+
+export default (initialState: InitialStateType) => {
+  const checkAccess = (abilities: string): boolean => {
+    return initialState?.access ? initialState.access[abilities] : false;
   };
+
+  const allAbilities = [
+    'manage_my_team',
+    'manage_all_team',
+    'manage_access',
+    'manage_audits',
+  ];
+
+  let access: { [key: string]: boolean } = {};
+  allAbilities.forEach((item) => {
+    access[item] = checkAccess(item) || false;
+  });
+
+  return access;
 };

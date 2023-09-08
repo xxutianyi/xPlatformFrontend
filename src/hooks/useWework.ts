@@ -1,5 +1,5 @@
 import { LOGIN_WEWORK } from '@/constants';
-import { weworkConfig } from '@/services/Auth';
+import { weworkConfig } from '@/services/_Foundation/Authentication';
 import { useSearchParams } from '@@/exports';
 import { useEffect, useState } from 'react';
 
@@ -20,6 +20,7 @@ export default function useWework() {
 
   useEffect(() => {
     weworkConfig().then((res) => {
+
       const { corp_id, agent_id, login_type } = res.data;
 
       setInAppUrl(

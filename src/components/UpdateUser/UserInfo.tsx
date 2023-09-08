@@ -1,5 +1,8 @@
 import useMessage from '@/hooks/useMessage';
-import { currentUser, updateCurrentUser } from '@/services/_Foundation/Authentication';
+import {
+  currentState,
+  updateCurrentUser,
+} from '@/services/_Foundation/Authentication';
 import { BaseUserType } from '@/services/_Foundation/_typings';
 import { useModel } from '@@/exports';
 import { ProFormText } from '@ant-design/pro-components';
@@ -16,8 +19,8 @@ const UserInfo = (props: {
   const message = useMessage();
 
   const onOpenChange = (visible: boolean) => {
-    currentUser().then((res) => {
-      const canClose = res.data?.name && res.data?.mobile;
+    currentState().then((res) => {
+      const canClose = res.data.user?.name && res.data.user?.mobile;
 
       if (canClose) {
         props.setOpen(visible);
@@ -29,8 +32,8 @@ const UserInfo = (props: {
   };
 
   useEffect(() => {
-    currentUser().then((res) => {
-      const canClose = res.data?.name && res.data?.mobile;
+    currentState().then((res) => {
+      const canClose = res.data.user?.name && res.data.user?.mobile;
 
       if (!canClose) {
         props.setOpen(true);
@@ -40,7 +43,7 @@ const UserInfo = (props: {
 
   return (
     <ModalForm<BaseUserType>
-      initialValues={initialState?.currentUser}
+      initialValues={initialState?.user}
       title="更新个人信息"
       open={props.open}
       onOpenChange={onOpenChange}
@@ -54,7 +57,7 @@ const UserInfo = (props: {
       submitTimeout={2000}
       onFinish={async (values) => {
         const result = await updateCurrentUser(values);
-        await setInitialState({ currentUser: result.data });
+        await setInitialState({ ...initialState, user: result.data });
         await refresh();
         return result.success;
       }}

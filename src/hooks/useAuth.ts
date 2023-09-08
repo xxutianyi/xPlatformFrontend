@@ -1,25 +1,24 @@
 import { HOME_PATH, LOGIN_ACCOUNT } from '@/constants';
 import useMessage from '@/hooks/useMessage';
+import useWework from '@/hooks/useWework';
 import {
+  MobileVerifyProps,
+  PasswordProps,
   csrf,
-  currentUser,
-  weworkAuth,
+  currentState,
   logoutAuth,
   mobileVerifyAuth,
-  MobileVerifyProps,
   passwordAuth,
-  PasswordProps,
+  weworkAuth,
 } from '@/services/_Foundation/Authentication';
-import { history, useLocation, useModel, useRequest, useSearchParams } from '@umijs/max';
+import { history, useLocation, useModel, useRequest } from '@umijs/max';
+import { AxiosError } from 'axios';
 
 export default function (middleware: 'auth' | 'guest' = 'auth') {
   const message = useMessage();
-  const [searchParams] = useSearchParams();
   const location = useLocation();
   const { refresh, setInitialState } = useModel('@@initialState');
-
-  const kookUrl = '';
-  const inKook = false;
+  const { inApp, url: weworkUrl } = useWework();
 
   let redirect = localStorage.getItem('redirect_url');
 
@@ -29,16 +28,17 @@ export default function (middleware: 'auth' | 'guest' = 'auth') {
     redirect = decodeURIComponent(redirect);
   }
 
-  const { data: user, refresh: reRequest } = useRequest(currentUser, {
-    cacheKey: 'current-user',
+  const { data: user, refresh: reRequest } = useRequest(currentState, {
+    cacheKey: 'current-state',
     refreshOnWindowFocus: true,
+    throwOnError: true,
     onSuccess: async (data) => {
-      setInitialState({ currentUser: data });
+      setInitialState(data);
       if (middleware === 'auth' && !data) {
-        if (inKook) {
-          window.location.href = kookUrl;
+        if (inApp) {
+          window.location.href = weworkUrl;
         }
-        if (!inKook && location.pathname !== LOGIN_ACCOUNT) {
+        if (!inApp && location.pathname !== LOGIN_ACCOUNT) {
           localStorage.setItem('redirect_url', location.pathname);
           history.push(LOGIN_ACCOUNT);
         }
@@ -46,6 +46,15 @@ export default function (middleware: 'auth' | 'guest' = 'auth') {
       if (middleware === 'guest' && data) {
         if (redirect && location.pathname !== redirect) {
           history.push(redirect);
+        }
+      }
+    },
+    onError: async (e) => {
+      const { response } = e as AxiosError;
+      if (response?.status === 401) {
+        if (!inApp && location.pathname !== LOGIN_ACCOUNT) {
+          localStorage.setItem('redirect_url', location.pathname);
+          history.push(LOGIN_ACCOUNT);
         }
       }
     },

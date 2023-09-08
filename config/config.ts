@@ -1,6 +1,7 @@
 import { defineConfig } from '@umijs/max';
 import proxy from './proxy';
 import routes from './routes';
+import { LOGO_PATH } from "@/constants";
 
 const { REACT_APP_ENV = 'dev' } = process.env;
 
@@ -11,8 +12,8 @@ export default defineConfig({
   manifest: {},
   fastRefresh: true,
   theme: { 'root-entry-name': 'variable' },
-  favicons: ['/images/logo.png'],
-  links: [{ href: '/images/logo.png', rel: 'apple-touch-icon' }],
+  favicons: ['/images/logo.svg'],
+  links: [{ href:'/images/logo.svg', rel: 'apple-touch-icon' }],
   metas: [
     { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
   ],
@@ -39,4 +40,5 @@ export default defineConfig({
   tailwindcss: {},
   extraPostCSSPlugins: [require('tailwindcss/nesting')],
   svgr: {},
+  presets: ['umi-presets-pro'],
 });

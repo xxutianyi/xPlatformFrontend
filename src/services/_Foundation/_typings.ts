@@ -12,7 +12,8 @@ export interface BaseUserType {
 }
 
 export interface InitialStateType {
-  currentUser?: BaseUserType;
+  user?: BaseUserType;
+  access?: Record<string, boolean>;
 }
 
 export type AvatarProps = WithFalse<

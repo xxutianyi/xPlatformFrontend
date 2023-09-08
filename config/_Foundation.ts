@@ -64,6 +64,12 @@ export const _FoundationRoutes: RouteItem[] = [
         path: 'roles&access',
         component: _FoundationPages + '/Roles&Access',
       },
+      {
+        name: '审计日志',
+        icon: 'audit',
+        path: 'audits',
+        component: _FoundationPages + '/AuditRecords',
+      },
     ],
   },
   { path: '*', component: _FoundationPages + '/404', layout: false },
