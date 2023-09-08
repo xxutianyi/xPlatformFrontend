@@ -6,8 +6,8 @@ export default (initialState: InitialStateType) => {
   };
 
   const allAbilities = [
-    'manage_my_team',
-    'manage_all_team',
+    'manage_team',
+    'manage_user',
     'manage_access',
     'manage_audits',
   ];

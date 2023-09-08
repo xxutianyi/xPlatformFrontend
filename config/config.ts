@@ -1,7 +1,6 @@
 import { defineConfig } from '@umijs/max';
 import proxy from './proxy';
 import routes from './routes';
-import { LOGO_PATH } from "@/constants";
 
 const { REACT_APP_ENV = 'dev' } = process.env;
 
